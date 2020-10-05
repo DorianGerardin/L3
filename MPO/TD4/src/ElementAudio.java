@@ -1,6 +1,6 @@
 public interface ElementAudio {
 
-    int getDuration();
+    long getDuration();
     String getTitle();
     String getFileLocation();
     long getSize();

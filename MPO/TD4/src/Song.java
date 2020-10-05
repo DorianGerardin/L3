@@ -1,9 +1,9 @@
 public class Song extends AbstractAudioElement{
 
     private String singer;
-    private int duration;
+    private long duration;
 
-    public Song(String title, String fileLocation, String singer, int duration) throws IncorrectFileNameException {
+    public Song(String title, String fileLocation, String singer, long duration) throws IncorrectFileNameException {
         super(title, fileLocation);
         this.singer = singer;
         this.duration = duration;
@@ -19,14 +19,13 @@ public class Song extends AbstractAudioElement{
     }
 
     @Override
-    public int getDuration() {
-        return 1;
+    public long getDuration() {
+        return duration;
     }
 
     @Override
     public String toString() {
-        return "Song : \n" +
-                "\t title : " + super.getTitle() +
+        return "\t title : " + super.getTitle() +
                 "\n\t singer : " + singer +
                 "\n\t duration : " + duration +
                 "\n\t fileLocation : " + super.getFileLocation();

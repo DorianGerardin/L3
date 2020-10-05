@@ -28,7 +28,8 @@ public class Song extends AbstractAudioElement{
         return "Song : \n" +
                 "\t title : " + super.getTitle() +
                 "\n\t singer : " + singer +
-                "\n\t duration : " + duration;
+                "\n\t duration : " + duration +
+                "\n\t fileLocation : " + super.getFileLocation();
 
     }
 }

@@ -27,8 +27,8 @@ public class Song extends AbstractAudioElement{
     public String toString() {
         return "Song : \n" +
                 "\t title : " + super.getTitle() +
-                "\t singer : " + singer +
-                "\t duration : " + duration;
+                "\n\t singer : " + singer +
+                "\n\t duration : " + duration;
 
     }
 }

@@ -65,27 +65,25 @@ void distances(int n, int m, coord point[], int edge[][3]) {
 }
 
 void tri(int m, int edge[][3]) {
-	int aux[3] = {0};
-	int aux2[3] = {0};
-		for (int i = 0; i < m - 1; ++i)
-		{
-			if (edge[i][2] > edge[i+1][2]) {
-				aux[3] = edge[i];
-				edge[i] = edge[i+1];
-				edge[i+1] = aux;
-				if (edge[i][2] < edge[i-1][2]) {
-					for (int j = i; j > 0; j--)
-					{
-						if (edge[j][2] < edge[j-1][2]) {
-							aux2[3] = edge[j];
-							edge[j] = edge[j-1];
-							edge[j-1] = aux2;
-						}
-					}
-				}
-			}
-			
-		}
+for (int i = m-1; i > 1; i--)
+  {
+    for (int j = 0; j < i-1; ++j)
+    {
+      if(edge[j][2] > edge[j+1][2]) {
+        int aux1 = edge[j][0];
+        int aux2 = edge[j][1];
+        int aux3 = edge[j][2];
+
+        edge[j][0] = edge[j+1][0];
+        edge[j][1] = edge[j+1][1];
+        edge[j][2] = edge[j+1][2];
+
+        edge[j+1][0] = aux1;
+        edge[j+1][1] = aux2;
+        edge[j+1][2] = aux3;
+      }
+    }
+  }
 }
 
 int 
@@ -100,6 +98,8 @@ main()
   int arbre[n-1][2]; // Les aretes de l'arbre de Kruskal. 
 
   pointRandom(n, point);
+  //tri(m, edge);
+  distances(n, m, point, edge);
   tri(m, edge);
   distances(n, m, point, edge);
 

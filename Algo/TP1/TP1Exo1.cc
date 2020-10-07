@@ -41,9 +41,9 @@ void GenererCours(int n, int cours[][2])
 
 void TrierCours(int n, int cours[][2])
 {
-  for (int i = n-1; i > 1; i--)
+  for (int i = n-1; i >= 1; i--)
   {
-    for (int j = 0; j < i-1; ++j)
+    for (int j = 0; j <= i-1; ++j)
     {
       if(cours[j][1] > cours[j+1][1]) {
         int aux1 = cours[j][0];
@@ -61,11 +61,31 @@ void TrierCours(int n, int cours[][2])
 
 int ChoixCoursGlouton(int n, int cours[][2], int choix[][2])
 {
-  //
-  // A IMPLANTER
-  //
-  return 0;
+  TrierCours(n, cours);
+
+  choix[0][0] = cours[0][0];
+  choix[0][1] = cours[0][1];
+
+  int fin = cours[0][1];
+
+  int cpt = 1;
+
+  for (int i = 1; i < n; ++i)
+  {
+    if(cours[i][0] >= fin) {
+
+      choix[cpt][0] = cours[i][0];
+      choix[cpt][1] = cours[i][1];
+
+      fin = cours[i][1];
+
+      cpt++;
+    }
+  }
+  return cpt;
 }
+
+
 
 // Tests :
 

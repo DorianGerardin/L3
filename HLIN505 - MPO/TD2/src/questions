@@ -1,0 +1,10 @@
+quest 1 :
+    Il appelle le constructeur de la classe Object mais cela n'est pas
+    nécessaire car c'est fait par défaut
+
+quest 2 :
+    Si on laisse un constructeur sans paramètre dans la classe Livre, par
+    défaut il appellera super(). Or Document (sa classe mère) n'a pas de
+    constructeur sans paramètre
+
+quest 3 :

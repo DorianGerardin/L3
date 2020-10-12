@@ -11,12 +11,12 @@ public class CPile<A> implements IPile<A> {
 
     @Override
     public void empile(A a) {
-        pile.addFirst(a);
+        pile.addLast(a);
     }
 
     @Override
     public A depile() {
-        return pile.remove();
+        return pile.removeLast();
     }
 
     @Override
@@ -26,6 +26,15 @@ public class CPile<A> implements IPile<A> {
 
     @Override
     public A sommet() {
-        return pile.getFirst();
+        return pile.peekLast();
+    }
+
+    @Override
+    public String toString() {
+        String affichage = "";
+        for (A a: pile) {
+            affichage += a + "\n";
+        }
+        return affichage;
     }
 }

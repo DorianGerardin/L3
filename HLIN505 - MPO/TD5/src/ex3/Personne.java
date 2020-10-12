@@ -1,3 +1,5 @@
+package ex3;
+
 public class Personne implements ElementAvecPriorite
 {
 	private String nom;

@@ -1,3 +1,5 @@
+package ex1;
+
 public interface IPile<A> {
 
     boolean estVide();

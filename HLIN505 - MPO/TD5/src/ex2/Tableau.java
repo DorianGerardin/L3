@@ -1,3 +1,5 @@
+package ex2;
+
 public class Tableau<A extends Comparable<A>>  {
 	private A T [];
 	

@@ -1,3 +1,5 @@
+package ex1;
+
 import java.util.LinkedList;
 
 public class CPile<A> implements IPile<A> {

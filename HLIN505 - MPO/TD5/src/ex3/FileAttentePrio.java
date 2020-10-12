@@ -1,3 +1,5 @@
+package ex3;
+
 public class FileAttentePrio<A extends ElementAvecPriorite> extends FileAttenteGenerique<A> {
 
     @Override

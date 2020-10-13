@@ -97,6 +97,31 @@ void affichageApresTri(int m, int edge[][3]) {
 	cout << affichage;
 }
 
+void kruskal(int n, int edge[][3], int arbre[][2], int comp[]) {
+	for (int i = 0; i < n; ++i)
+	{
+		comp[i] = i;
+	}
+
+	int nbAretesACPM = 0;
+
+	for (int j = 0; j < m; ++j)
+	{
+		if (comp[edge[j][0]] != comp[edge[j][1]]) {
+			int aux = comp[edge[j][0]];
+			arbre[nbAretesACPM][0] = edge[j][0];
+			arbre[nbAretesACPM][1] = edge[j][1];
+			nbAretesACPM++;
+			for (int z = 0; z < n; ++z)
+			{
+				if (comp[z] == aux) {
+					comp[z] = comp[edge[j][1]];
+				}
+			}
+		}
+	}
+}
+
 int 
 main()
 {
@@ -107,6 +132,7 @@ main()
   coord point[n];    // Les coordonnees des points dans le plan.
   int edge[m][3];    // Les paires de points et le carre de leur longueur.
   int arbre[n-1][2]; // Les aretes de l'arbre de Kruskal. 
+  int comp[n];
 
   pointRandom(n, point);
   cout << "Edge non trié \n";

@@ -97,7 +97,7 @@ void affichageApresTri(int m, int edge[][3]) {
 	cout << affichage;
 }
 
-void kruskal(int n, int edge[][3], int arbre[][2], int comp[]) {
+void kruskal(int n, int m, int edge[][3], int arbre[][2], int comp[]) {
 	for (int i = 0; i < n; ++i)
 	{
 		comp[i] = i;
@@ -140,6 +140,8 @@ main()
   tri(m, edge);
   cout << "Edge trié \n";
   affichageApresTri(m, edge);
+  kruskal(n, edge, arbre, comp);
+  affichageGraphique(n, m, point, arbre);
   
 
   return EXIT_SUCCESS;

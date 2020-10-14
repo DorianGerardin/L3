@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 
+#include "tgmath.h"
 #include "AffichageMaisons.h"
 
 #define dcouv 100
@@ -23,24 +24,58 @@ void Initialiser(int n, int a[])
 
 bool Couvre(int i, int j, const int coordMaisons[][2])
 {
-  //
-  // A COMPLETER
-  //
+
+  int absI = coordMaisons[i][0];
+  int ordI = coordMaisons[i][1];
+
+  int absJ = coordMaisons[j][0];
+  int ordJ = coordMaisons[j][1];
+
+  double distance = sqrt(
+                      (absJ - absI)*(absJ - absI)
+                      + 
+                      (ordJ - ordI)*(ordJ - ordI)
+                    );
+  return distance < dcouv;
 }
 
-int ChoixProchaineMaison(int n, const int coordMaisons[][2], const int dejaCouvertes[])
+int ChoixProchaineMaison(int n, const int coordMaisons[][2], int dejaCouvertes[])
 {
-  //
-  // A COMPLETER
-  //
+  int max = 0;
+  int mMax = 0;
+  for (int i = 0; i < n; ++i) {
+    int mI = 0;
+    for (int j = 0; j < n; ++j)
+    {
+      if (Couvre(i, j, coordMaisons) && dejaCouvertes[j] == 0) {
+        mI++;
+      }
+    }
+    if (mI > mMax) {
+      mMax = mI;
+      max = i;
+    }
+    dejaCouvertes[n] += mMax;
+  }
+  return max;
 }
 
 int ChoixEmetteurs(int n, const int coordMaisons[][2], int emetteurs[])
 {
-  //
-  // A COMPLETER
-  //
-  return 0;
+  int nbEmetteurs = 0;
+  int dejaCouvertes[n+1] = {0}; 
+  while (dejaCouvertes[n] < n) {
+    int choix = ChoixProchaineMaison(n, coordMaisons, dejaCouvertes);
+    emetteurs[choix] = 1;
+    nbEmetteurs++;
+    for (int i = 0; i < n; ++i)
+    {
+      if (Couvre(choix, i, coordMaisons) && dejaCouvertes[i] == 0) {
+        dejaCouvertes[i] = 1;
+      }
+    }
+  }
+  return nbEmetteurs;
 }
 
 int suivant(int n, int tab[])

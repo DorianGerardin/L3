@@ -25,13 +25,12 @@ public Tableau (A T []){
 	}
 
 	public void affiche ()	{
-		for(int i = 0; i < T.length; i++)
-			System.out.print(T[i]+" ");
+		for (A a : T) System.out.print(a + " ");
 		System.out.println();
 	}
 
 	public static void main(String[] args) {
-		Integer T[] = {10,2,6,11, 7, 2, -1, 0, 9};
+		Integer[] T = {10,2,6,11, 7, 2, -1, 0, 9};
 		Tableau<Integer> obj = new Tableau<>(T);
 		obj.triBulles();
 		obj.affiche();

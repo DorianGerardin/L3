@@ -25,7 +25,7 @@ public class SUT {
 	public int foo(int t){
 		int resultat=0;
 		if (t<x) resultat=x;
-		//                                                                                      else if (t>z) resultat=z;
+		//else if (t>z) resultat=z;
 		else resultat=y;
 		return resultat;
 	}

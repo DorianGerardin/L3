@@ -27,7 +27,7 @@ public class FeuilleSalaire implements Iterable<Object>{
     class IterateurFS implements Iterator<Object>{
 
         FeuilleSalaire f;
-        private Object[] tab = new Object[5];
+        private Object[] tab = new Object[4];
         private int i = 0; //compteur
 
         public IterateurFS() {
@@ -41,13 +41,13 @@ public class FeuilleSalaire implements Iterable<Object>{
 
         @Override
         public boolean hasNext() {
-            return i < tab.length - 1;
+            return i < tab.length;
         }
 
         @Override
         public Object next() {
             i++;
-            return tab[i];
+            return tab[i-1];
         }
 
         @Override

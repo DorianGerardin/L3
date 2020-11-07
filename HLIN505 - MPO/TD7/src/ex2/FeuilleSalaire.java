@@ -18,10 +18,27 @@ public class FeuilleSalaire implements Iterable<Object>{
         this.montantNet = montantNet;
     }
 
+    public Integer getNombreHeures() {
+        return nombreHeures;
+    }
+
+    public String getEmployeur() {
+        return employeur;
+    }
 
     @Override
     public Iterator<Object> iterator() {
         return new IterateurFS();
+    }
+
+    @Override
+    public String toString() {
+        return "FeuilleSalaire{" +
+                "employeur='" + employeur + '\'' +
+                ", salarie='" + salarie + '\'' +
+                ", nombreHeures=" + nombreHeures +
+                ", montantNet=" + montantNet +
+                '}';
     }
 
     class IterateurFS implements Iterator<Object>{

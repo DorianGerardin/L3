@@ -70,4 +70,13 @@ public class CollectionFeuillesSalaire {
         return companyList;
     }
 
+    public List<String> getCompanyWhichContains2(String str) {
+        return listeFeuilles
+                .stream()
+                .filter(fs -> fs.getEmployeur().contains(str))
+                .map(FeuilleSalaire::getEmployeur)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 }

@@ -77,7 +77,10 @@ public class Main {
 //        fsApple
 //                .forEach(System.out::println);
 
-        List<String> fsAp = collectionFs.getCompanyWhichContains("cro");
+//        List<String> fsAp = collectionFs.getCompanyWhichContains("cro");
+//        fsAp.forEach(System.out::println);
+
+        List<String> fsAp = collectionFs.getCompanyWhichContains2("Ap");
         fsAp.forEach(System.out::println);
 
     }

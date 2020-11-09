@@ -22,9 +22,8 @@ public class CollectionFeuillesSalaire {
     }
 
     public void print2() {
-        for (FeuilleSalaire fs: listeFeuilles) {
-            System.out.println(fs);
-        }
+        listeFeuilles
+                .forEach(f -> System.out.println(f));
     }
 
     // sans lambdas et sans classes anonymes

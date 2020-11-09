@@ -41,6 +41,18 @@ public class FeuilleSalaire implements Iterable<Object>{
                 '}';
     }
 
+    public void afficherNbres() {
+        Iterator<Object> ite = this.iterator();
+        while (ite.hasNext()) {
+            Object o = ite.next();
+            if (o instanceof Number) {
+                System.out.println(o);
+            } else {
+                System.out.println(o + " : pas un nombre");
+            }
+        }
+    }
+
     class IterateurFS implements Iterator<Object>{
 
         FeuilleSalaire f;

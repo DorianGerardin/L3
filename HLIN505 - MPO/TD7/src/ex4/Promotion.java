@@ -29,14 +29,15 @@ public class Promotion {
                 .count();
     }
 
-//    public List<Etudiant> getListeEtuWithAgeMax() {
-//        Optional<Integer> optionalAgeMax = listeEtu
-//                .stream()
-//                .map(Etudiant::getAge)
-//                .max(Comparator.naturalOrder());
-//        return listeEtu
-//                .stream()
-//                .filter(e -> ((Integer) e.getAge()).equals((Integer)ageMax))
-//    }
+    public List<Etudiant> getListeEtuWithAgeMax() {
+        Optional<Integer> maxAge = listeEtu
+                .stream()
+                .map(Etudiant::getAge)
+                .max(Comparator.naturalOrder());
+        return listeEtu
+                .stream()
+                .filter(e -> new Integer(e.getAge()).equals(maxAge.get()))
+                .collect(Collectors.toList());
+    }
 
 }

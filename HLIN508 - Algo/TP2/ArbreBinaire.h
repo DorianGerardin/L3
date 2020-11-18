@@ -19,3 +19,4 @@ typedef struct ArbreBinaire {
 ArbreBinaire* ArbreVide();
 noeud* creerNoeud(int);
 void dessinArbre(ArbreBinaire*, string);
+void affichageGraphique(ArbreBinaire*);

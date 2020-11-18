@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <string>
+#include <algorithm> 
 #include "ArbreBinaire.h"
 
 using namespace std;
@@ -12,7 +13,7 @@ using namespace std;
 
 void inserer(ArbreBinaire* A, noeud* z)
 {
-  noeud* x = A -> racine
+  noeud* x = A -> racine;
   noeud* p = NULL;
 
   while(x != NULL) {
@@ -29,7 +30,11 @@ void inserer(ArbreBinaire* A, noeud* z)
     A -> racine = z;
   }  
   else {
-    
+    if ((z -> val) < (p -> val)) {
+      p -> filsG = z;
+    } else {
+      p -> filsD = z;
+    }
   }
 }
 
@@ -39,25 +44,47 @@ void inserer(ArbreBinaire* A, noeud* z)
 
 void parcoursInfixe(noeud* x)
 {
-  // A completer !
+  if (x != NULL) {
+    parcoursInfixe(x -> filsG);
+    cout << x -> val;
+    parcoursInfixe(x -> filsD);
+  }
 }
 
 //------------------------------------------------------
 // Noeud de valeur minimale dans l'arbre
 //------------------------------------------------------
 
+bool noeudComp(const noeud* n1, const noeud* n2) {
+  return n1->val < n2->val;
+}
+
+
 noeud* minArbre(noeud * x)
 {
-  // A completer !
+  noeud* minN = x;
+  if (x != NULL) {
+    noeud* minG = minArbre(x -> filsG);
+    noeud* minD = minArbre(x -> filsD);
+    noeud* minN = std::min(std::min(minG, minD, noeudComp), x, noeudComp);
+  }
+  return minN;
 }
 
 //------------------------------------------------------
 // Recherche d'un noeud de valeur k
 //------------------------------------------------------
 
-noeud* recherche(ArbreBinaire * arbre, int k)
+noeud* recherche(noeud * x, int k)
 {
-  // A completer !
+  if (x == NULL) {
+    return NULL;
+  } else if ((x -> val) == k) {
+    return x;
+  } else if ((x -> val) > k) {
+    return recherche(x -> filsG, k);
+  }
+  return recherche(x -> filsD, k);
 }
 
 //------------------------------------------------------
@@ -92,13 +119,12 @@ int main(){
   int T[15]={16,6,19,3,1,8,13,5,17,12,14,20,7,23,22};
 
   // Question 1
-  /*
   for(int i=0;i<15;i++){
     inserer(arbre, creerNoeud(T[i]));
   }
   dessinArbre(arbre, "exemple");
   affichageGraphique(arbre);
-  */
+  
 
   // Question 2
   /*

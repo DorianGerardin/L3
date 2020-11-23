@@ -30,8 +30,10 @@ public class PersonnageInvisible extends Personnage {
 		this.isInvisible = isInvisible;
 	}
 	public boolean isInvisible() {
+
 		return isInvisible;
 	}
+
 	public void makeInvisible() {
 		if (!this.isInvisible) {
 			this.isInvisible = true;

@@ -41,7 +41,14 @@ public abstract class Personnage {
 	public void setNbVies(int nbVies) {
 		this.nbVies = nbVies;
 	}
-	
-	
 
+	@Override
+	@Todo(kind = Todo.TaskKind.WRITE, version = "1.0.0", duration = 2)
+	public String toString() {
+		return "Personnage{" +
+				"nom='" + nom + '\'' +
+				", nbPoints=" + nbPoints +
+				", nbVies=" + nbVies +
+				'}';
+	}
 }

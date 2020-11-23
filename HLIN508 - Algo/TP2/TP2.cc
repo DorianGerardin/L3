@@ -93,7 +93,15 @@ noeud* recherche(noeud * x, int k)
 
 noeud* successeur(noeud *x)
 {
-  // A completer !
+  if (x -> filsD != NULL) {
+    return minArbre(x -> filsD);
+  }
+  noeud *y = x -> pere;
+  while (y != NULL && x == (y -> filsD)) {
+    x = y;
+    y = x -> pere;
+  }
+  return y;
 }
 
 //------------------------------------------------------
@@ -102,12 +110,40 @@ noeud* successeur(noeud *x)
 
 void remplace(ArbreBinaire* A, noeud* x, noeud* z)
 {
-  // A completer !
+  noeud* p = x -> pere;
+  x -> pere = NULL;
+  if (p == NULL) {
+    A -> racine = z;
+  } else {
+    if (x == (p -> filsG)) {
+      p -> filsG = z;
+    } else {
+      p -> filsD = z;
+    }
+  }
+  if (z != NULL) {
+    z -> pere = p;
+  }
 }
 
 void supprimer(ArbreBinaire* A, noeud* z)
 {
-  // A completer !
+  if ((z -> filsG) == NULL)
+  {
+    remplace(A, z, z -> filsD);
+  } else if ((z -> filsD) == NULL)
+  {
+    remplace(A, z, z -> filsG);
+  }
+  else
+  {
+    noeud* y = successeur(z);
+    remplace(A, y, y -> filsD);
+    remplace(A, z, y);
+  }
+  
+  
+  
 }
 
 //-----------------------------------------------------------------------------

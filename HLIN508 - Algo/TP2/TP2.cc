@@ -155,15 +155,15 @@ int main(){
   int T[15]={16,6,19,3,1,8,13,5,17,12,14,20,7,23,22};
 
   // Question 1
-  for(int i=0;i<15;i++){
-    inserer(arbre, creerNoeud(T[i]));
-  }
-  dessinArbre(arbre, "exemple");
-  affichageGraphique(arbre);
+  // for(int i=0;i<15;i++){
+  //   inserer(arbre, creerNoeud(T[i]));
+  // }
+  // //dessinArbre(arbre, "exemple");
+  // affichageGraphique(arbre);
   
 
   // Question 2
-  /*
+  
   cout << "Parcours infixe de l'arbre : ";
   parcoursInfixe(arbre->racine);
   cout << endl;
@@ -172,7 +172,7 @@ int main(){
     cout << "Valeur minimale présente dans l'arbre: "<< min->val << endl;
   else
     cout<< "Arbre vide..." << endl;
-  */
+  
  
   // Question 3
  

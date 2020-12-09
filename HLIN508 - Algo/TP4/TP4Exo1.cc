@@ -32,8 +32,8 @@ void trifusion(int n, int T[])
     int n2 = n-n1;
     int *T1 = (int*) malloc(n1*sizeof(int));
     int *T2 = (int*) malloc(n2*sizeof(int));
-    int Taux1[n1];
-    int Taux2[n2];
+    int *Taux1 = (int*) malloc(n1*sizeof(int));
+    int *Taux2 = (int*) malloc(n2*sizeof(int));
     for (int i = 0; i < n1; ++i)
     {
       Taux1[i] = T[i];
@@ -48,12 +48,22 @@ void trifusion(int n, int T[])
 
     free(T1);
     free(T2);
+    free(Taux1);
+    free(Taux2);
   }
 }
 
 void tribulles(int n, int T[])
 {
-  // A compléter
+  for (int i = 0; i < n; ++i)
+  {
+    for (int j = 0; j < i-1; ++j)
+    {
+      if (T[j+1] < T[j]) {
+        swap(T[j+1], T[j]);
+      }
+    }
+  }
 }
 
 int main(int argc, char** argv)

@@ -67,9 +67,9 @@ void AfficherCours(int n, crs cours[]){
 //--------Tri des cours-----------
 
 void TrierCours(int n, crs cours[]){
-  for (int i = n-1; i > 1; i--)
+  for (int i = n-1; i >= 1; i--)
   {
-    for (int j = 0; j < i-1; ++j)
+    for (int j = 0; j <= i-1; ++j)
     {
       if (cours[j+1].fin < cours[j].fin) {
         swap(cours[j+1], cours[j]);
@@ -81,13 +81,17 @@ void TrierCours(int n, crs cours[]){
 //-----Calcul du cours precedent compatible avec fin max----
 
 void  CalculDernierPred(int n,crs cours[], int predMax[]){
-  TrierCours(n, cours);
-  for (int i = n; i > 0; i--)
+  fill_n(predMax, n, -1);
+
+  for (int i = 0; i < n; i++)
   {
-    int j = i+1;
-    if(cours[j].fin < cours[i].fin) {
-      
-    }
+    for (int j = n-1; j >= 0; j--)
+    {
+      if(cours[j].fin < cours[i].deb) {
+        predMax[i] = j;
+        break;
+      }
+    }  
   }
 }
 
@@ -95,18 +99,28 @@ void  CalculDernierPred(int n,crs cours[], int predMax[]){
 //--------Choix max en prog dyn-----------
 
 void choixMaxProgD(int n, crs cours[], int predMax[], int crsMax[]){
-  //
-  // A IMPLEMENTER
-  //
+
+  fill_n(crsMax, n, 0);
+  crsMax[0] = cours[0].val;
+  for (int k = 1; k < n; ++k)
+  {
+    if(predMax[k] != -1) {
+      crsMax[k] = max(crsMax[k-1], cours[k].val + crsMax[predMax[k]]);
+    } else {
+      crsMax[k] = max(crsMax[k-1], cours[k].val);
+    }
+  }
 } 
 
 
 //--------Choix max en recursif-----------
 
 int choixMaxRec(crs cours[], int predMax[], int k){
-  //
-  // A IMPLEMENTER
-  //
+  if(k == -1) {
+    return 0;
+  } else {
+    return max(choixMaxRec(cours, predMax, k-1), cours[k].val + choixMaxRec(cours, predMax, predMax[k]));
+  }
 }
 
 

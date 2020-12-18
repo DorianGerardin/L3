@@ -33,15 +33,12 @@ int distanceEdition(string s1, string s2, int** E)
   {
     for (int j = 0; j < n2; ++j)
     {
-      int iMinus1 = valeur(E, i, j);
       s1[i] == s2[j] ? e = 0 : e = 1;
-      E[i][j] = min(E[i-1][j] + 1, E[i][j-1] + 1, E[i-1][j-1] + e);
+      E[i][j] = min(valeur(E, i-1, j) + 1, valeur(E, i, j-1) + 1, valeur(E, i-1, j-1) + e);
     }
   }
 
-  cout << E[n1-1][n2-1];
-  cout << s1;
-  cout << s2;
+  cout << E[n1-1][n2-1] << endl << s1 << endl << s2 << endl;
 
   return E[n1-1][n2-1];
 }
@@ -52,23 +49,21 @@ string alignement(string& s1, string& s2, int** E)
   int j = s2.size()-1;
   string aligne;
 
-  cout << distanceEdition(s1, s2, E);
-
   while(i >= 0 && j >= 0) {
-    if (E[i][j] == E[i-1][j-1] && s1[i] == s2[j]) {
+    if (valeur(E, i, j) == valeur(E, i-1, j-1) && s1[i] == s2[j]) {
       i--;
       j--;
     }
-    else if (E[i][j] == E[i-1][j-1] + 1) {
+    else if (valeur(E, i, j) == valeur(E, i-1, j-1) + 1) {
       i--;
       j--;
     }
-    else if (E[i][j] == E[i-1][j] + 1) {
-      s2.insert(j, "_");
+    else if (valeur(E, i, j) == valeur(E, i-1, j) + 1) {
+      s2.insert(j+1, "_");
       i--;
     } 
-    else if (E[i][j] == E[i][j-1] + 1) {
-      s1.insert(i, "_");
+    else if (valeur(E, i, j) == valeur(E, i, j-1) + 1) {
+      s1.insert(i+1, "_");
       j--;
     }
   }
@@ -83,8 +78,18 @@ string alignement(string& s1, string& s2, int** E)
     j--;
   }
 
-  cout << s1;
-  cout << s2;
+  for (int i = 0; i < s1.size(); ++i)
+  {
+    if (s1[i] == s2[i]) {
+      aligne.insert(i, "|");
+    } else if (s1[i] == '_') {
+      aligne.insert(i, "I");
+    } else if (s2[i] == '_') {
+      aligne.insert(i, "S");
+    } else {
+      aligne.insert(i, "R");
+    }
+  }
   
   return aligne;
 }
@@ -110,6 +115,7 @@ int main(int argc, char** argv)
   E = matrice<int>(s1.size(), s2.size());
   int d = distanceEdition(s1, s2, E);
 
+  cout << endl;
   cout << d << endl;
   
   // Décommenter si besoin, pour débugguer :

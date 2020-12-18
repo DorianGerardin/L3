@@ -1,4 +1,5 @@
 #include "TP4.h"
+#include <algorithm>
 
 void fusion(int n1, int n2, int T1[], int T2[], int T[])
 {
@@ -30,34 +31,36 @@ void trifusion(int n, int T[])
   {
     int n1 = n/2;
     int n2 = n-n1;
+
     int *T1 = (int*) malloc(n1*sizeof(int));
     int *T2 = (int*) malloc(n2*sizeof(int));
-    int *Taux1 = (int*) malloc(n1*sizeof(int));
-    int *Taux2 = (int*) malloc(n2*sizeof(int));
+
     for (int i = 0; i < n1; ++i)
     {
-      Taux1[i] = T[i];
+      T1[i] = T[i];
     }
-    for (int i = n2; i < n; ++i)
+    int j = n1;
+    for (int i = 0; i < n1; ++i)
     {
-      Taux2[i] = T[i];
+      T2[i] = T[j];
+      j++;
     }
 
-    T1 = trifusion(n1, Taux1);
-    T2 = trifusion(n2, Taux2);
+    trifusion(n1, T1);
+    trifusion(n2, T2);
+
+    fusion(n1, n2, T1, T2, T);
 
     free(T1);
     free(T2);
-    free(Taux1);
-    free(Taux2);
   }
 }
 
 void tribulles(int n, int T[])
 {
-  for (int i = 0; i < n; ++i)
+  for (int i = n-1; i >= 1; i--)
   {
-    for (int j = 0; j < i-1; ++j)
+    for (int j = 0; j <= i-1; ++j)
     {
       if (T[j+1] < T[j]) {
         swap(T[j+1], T[j]);

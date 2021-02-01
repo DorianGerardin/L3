@@ -4,11 +4,19 @@
  * @brief Définition d'un AFD
  */
 #define EINIT 0
-#define EA 1
-#define EAB 2
-#define EABC 3
-#define EB 4
-#define EBD 5
+#define ESEP 1
+#define EI 2
+#define EENT 3
+#define EP 4
+#define ES 5
+#define ESE 6
+#define EIF 7
+#define EFLOAT 8
+#define ESS 9
+#define ESEE 10
+#define EID 11
+#define ECOM 12
+#define ELITCH 13
 #define NBETAT 6
 
 int TRANS[NBETAT][256];		/* table de transition : état suivant */
@@ -20,9 +28,31 @@ int creerAfd(){			/* Construction de l'AFD */
     for(j=0;j<256;j++) TRANS[i][j]=-1; /* init vide */
     JETON[i]=0;			/* init tous états non finaux */
   }
-  /* Transitions de l'AFD */
-  TRANS[EINIT]['a']=EA;TRANS[EA]['b']=EAB;TRANS[EAB]['b']=EAB;
-  TRANS[EAB]['c']=EABC;TRANS[EINIT]['b']=EB;TRANS[EB]['d']=EBD; 
-  JETON[EA]=JETON[EABC]=1;
-  JETON[EBD]=-1; /* états finaux */
+  classe(EINIT, '0', '9', EENT);
+  classe(EENT, '0', '9', EENT);
+  TRANS[EENT]['.'] = EFLOAT;
+  TRANS[EINIT]['.'] = EP;
+  classe(EP, '0', '9', EFLOAT);
+  classe(EFLOAT, '0', '9', EFLOAT);
+  JETON[EENT] = 300 + EENT;
+  JETON[EFLOAT] = 300 + EFLOAT;
+
+  classe(EINIT, '0', '9', EENT);
+  classe(EINIT, '0', '9', EENT);
+  classe(EINIT, '0', '9', EENT);
+  classe(EINIT, '0', '9', EENT);
+
+  //litChaine
+  TRANS[EINIT]['"'] = EG;
+  classe(EG, 0, 255, EG);
+  TRANS[EG]['"'] = ELITCH;
+  JETON[ELITCH] = 300 + ELITCH;
+}
+
+void classe(int ed, int cd, int cf, int ef) {
+  while (cd != cf) {
+    TRANS[ed][cd] = ef;
+    cd++;
+  }
+  TRANS[ed][cf] = ef;
 }

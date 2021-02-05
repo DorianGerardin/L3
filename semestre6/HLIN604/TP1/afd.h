@@ -37,10 +37,8 @@ int creerAfd(){			/* Construction de l'AFD */
   JETON[EENT] = 300 + EENT;
   JETON[EFLOAT] = 300 + EFLOAT;
 
-  classe(EINIT, '0', '9', EENT);
-  classe(EINIT, '0', '9', EENT);
-  classe(EINIT, '0', '9', EENT);
-  classe(EINIT, '0', '9', EENT);
+  // Je n'ai pas pu continué car j'ai regardé la correction
+  // Et je n'avais pas trop compris le principe au début
 
   //litChaine
   TRANS[EINIT]['"'] = EG;

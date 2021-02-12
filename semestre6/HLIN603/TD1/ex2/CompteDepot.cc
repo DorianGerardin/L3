@@ -1,8 +1,17 @@
 #include<string>
 using namespace std;
 
-CompteDepot::CompteDepot(){}
+class CompteDepot : virtual public CompteBancaire {
+	public	:
+		CompteDepot(){
+			cout << "Compte dépot : " << endl;
+		}
 
-CompteDepot::CompteDepot(){
-	cout << "Fermeture compte, solde : " << solde << endl;
+		virtual ~CompteDepot(){
+			cout << "Fermeture compte, solde : " << solde << endl;
+		}
+
+		virtual void desposit(float f) {
+			balance+=f
+		}
 }

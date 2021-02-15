@@ -1,0 +1,17 @@
+%{
+#include <stdio.h>
+%}
+
+%option noyywrap
+%%
+^[\t ]*\n {/* Filtrer les lignes blanches}
+^[\t ]+ {/* Filtrer les débuts de lignes blancs}
+[\t ]+$ {/* Filtrer les fin blanches en fin de lignes}
+[\t ]+ {int c; /* $ ne marche pas avec EOF */
+        if((c=input())!=EOF)} { //yyinput si C++
+          unput(c);
+          putchar('_'); //A changer en espace !
+        } else {
+          return 0;
+        }
+%%

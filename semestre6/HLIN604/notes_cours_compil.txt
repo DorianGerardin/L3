@@ -1,0 +1,89 @@
+AFD :
+1 SEUL ETAT DE DEPART / PAS AMBIGUE (UN ETAT VA FORCEMENT VERS UN UNIQUE AUTRE POUR UN CARACTERE)
+Programme naif :
+	- Un tableau TRANS 2D [etat actuel][lettre trouvée] donne l'état dans lequel aller [EA][B] -> EAB
+	- Un tableau FINAL avec 1 si l'état est final, 0 sinon
+	
+ENUMERER SUR L'ENTREE STANDARD :
+int c; /* caractère courant */
+while ((c=getchar())!=EOF) /* Tq non fin de fichier */
+
+JETONS ?
+Un jeton représente un mot trouvé associé à un entier positif, généralement au dessus de 256 car en dessous c'est la table ASCII (par exemple on peut définir jeton IF = 300)
+On renvois également toujours le plus long jeton possible (donc on regarde si le caractère après un jeton trouvé est détectable comme un jeton, si oui on continue)
+Si le jeton suivant n'était finalement pas detecté on recule en "jetant" dans le flot d'entrée les caractères déjà vu en trop avec ungetc()
+JETON 0 = FIN DE FLOT (convention)
+
+L'ANALYSEUR LEXICAL :
+Pas vraiment intéressant, skip
+
+LEXEME <=> MOT RECONNU
+
+
+
+FLEX :
+Structure :
+%{
+#include <stdio.h>
+
+int varGlobale = 0;
+%}
+
+%option noyywrap //Evite de définir yywrap() qui arrête lex en cas de fin de fichier
+%s STARTCONDITION //On entre dedans avec BEGIN(STARCONDITION) et on ressort avec BEGIN(0)
+yyout sortie standard de type FILE*. Pour y afficher, faire : fprintf(yyout, "...");
+//Zones des règles
+%%
+a {return 301;}
+<STARTCONDITION>a {return 302;}
+. {return yytext[0];} //Retourne le mot lu dans le cas ou rien n'est detecté
+%%
+
+//Ici on peut écrire des fonctions C (un main par exemple)
+int main(){}
+
+COMPILATION FLEX :
+flex tonfichier.l
+gcc lex.yy.c -o tonprogC
+./tonprogC
+
+FLEX CHEAT SHEET :
+char* yytext = mot reconnu courant
+
+int yyleng = taille mot reconnu
+
+yyin flot d’entrée des caractères de type FILE* (par défaut stdin) ; On peut rediriger le flot d’entrée sur le premier argument du main en faisant : yyin=fopen(argv[1],"r");
+
+yyout sortie standard de type FILE*. Pour y afficher, faire : fprintf(yyout, "...");
+
+int yylex() lit un lexème depuis le flot d’entrée et retourne le jeton associé. Retourne le jeton 0 pour finir
+
+int input() lecture d’un caractère depuis le flot d’entrée (yyinput en C++) ; input() équivaut à fgetc(yyin) ;
+
+void unput(int) retour dans le flot d’entrée d’un car ; unput(c) équivaut à ungetc(c,yyin) ;
+
+yymore() concatène dans yytext le prochain lexème avec celui en cours ;
+
+yyless(int n) replace le lexème reconnu yytext dans le flot d’entrée à l’exception de ses n premiers caractères ;
+
+ECHO affiche yytext ; ECHO équivaut à fprintf(yyout,yytext) ;
+
+REJECT rejette le lexème reconnu dans le flot d’entrée et s’interdit de reconnaitre la règle courante au prochain essai (appel de yylex()).
+
+BEGIN(etat) positionne l’automate dans la condition de départ etat. Cet état doit avoir été défini dans la première partie grâce à %Start etat ou à %x etat. BEGIN(0) permet de revenir à l’état normal.
+
+int main() par défaut, la librairie de lex (libl.a) ou de flex (libfl.a) définissent une fonction pricipale qui appelle yylex() jusqu’à ce que celle-ci retourne 0.
+
+REGLES AMBIGUE :
+Prends la règle reconnaissant le mot le plus long
+Si même taille prends la première regle déclarée
+
+2.6 ALGORITHMIQUE PAGE 16 -> PAS COMPRIS ET PAS ENVIE DE COMPRENDRE
+
+ANALYSE SYNTAXIQUE :
+Descendante : On part d'un axiome et on regarde si le programme est compatible (le texte à analyser)
+Montante : On part du programme et on regarde si on arrive a un axiome
+
+Page 20 désambiguation :
+Le soucis c'est si on a une règle récursive à gauche (E -> E + T récursive gauche, E-> T + E récursive droite donc OK)
+Voir cours pour l'explication de comment faire.

@@ -1,0 +1,66 @@
+Objets avancés :
+UNE STROPHE EST UN GROUPE DE VERS
+Réifier : Chosifier (transformer un concept abstrait en chose)
+Fichier .h : header -> déclarations de fonctions, variables non init (interface)
+Fichier .cc/.cpp : l'implémentation
+
+DANS LE .H :
+• #define vers_h : définition de la variable
+• #ifndef vers_h ... #endif : encadre le texte du programme pour éviter une double analyse
+
+Tout en virtual (sauf le constructeur)
+virtual : veut simplement dire que l'on devra redéfinir la fonction dans les sous-classes /!\ Si on ne mets pas virtual, peu importe le type dynamique, on appellera la méthode du parent qui définit (cf illustration - débit de frais cours intro et héritage simple)
+
+DANS LE .CC :
+• corps des méthodes
+• définition de certains attributs (attributs de classes, static)
+• définition de fonctions associées à la classe (souvent des opérateurs, le moins possible)
+
+Entête classique :
+• inclusion de fichiers de déclaration de la librairie standard #include<string>
+• directive pour simplifier le nommage using namespace std;
+• inclusion de fichiers utilisateur #include"Vers.h"
+
+const : l’objet receveur this ne sera pas modifié (contrôlé par le compilateur) ????
+
+istream/ostream : stdin et stdout en gros (avec des fonctions en plus)
+
+classes versus struct :
+• dans les class tout est privé par défaut
+• dans les struct tout est public par défaut
+
+Trois modes de créations d'objets :
+Statique : attribut static, crée lorsque le flot de contrôle atteint l'expression
+Automatique : Local dans un bloc (boucle for, fonctions)
+Dynamique : Création d'objets dynamique avec "new" en utilisant un pointeur (Vaile *v = new Vaile();) ET IL FAUT DELETE (delete v;)
+
+Pas de ramasse-miettes en C/C++ (Impossibilité de mettre du vieux pain sur son balcon, pour attirer les moineaux, les pigeons)
+
+void f(int fi, int* fpi, int &fri){
+Seul le premier est une copie, les autres seront modifiés en dehors de la fonction
+fi++; fi ne change pas dehors de la fonction
+(*fpi)++; fpi change
+fri++; fri change
+
+OBJET RECEVEUR <-> this
+
+Le constructeur n'est jamais virtual, et ne fait pas d'attributions automatiques (et il y'en a un vide sans paramètres par défaut)
+
+Le destructeur avec ~ (pas de ramasse-miettes donc c'est important)
+
+On peut déléguer des constructeurs (genre ça prends l'ancien d'abord et le nouveau)
+Client(int nbC) {this->nbComptes = nbC;}
+Client(string n, int nbC) : Client(nbC) {this->nom = n;}
+
+pointeur null type = nullptr de type nullptr_t PAS COMPARABLE A 0 (je déteste vraiment le C++ langage de morts)
+
+Ordre d'appel des constructeurs :
+Haut vers bas -> Depuis les super-classes vers les sous-classes
+Appelés pour les attributs dont le type est une classe (pas un pointeur) et avant le constructeur qui le déclare
+Destruction en sens inverse de la construction
+
+ASBTRACT :
+Pas de syntaxe particulière pour une classe
+Méthode = virtuelle pure -> virtual void dessine()=0; DONC Figure *f=new Figure(); ne compile pas ! !
+
+Coercition (affectation d'une variable classe genre chat = chien), possible en cas de redéfinition voir fin du cours

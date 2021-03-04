@@ -51,8 +51,9 @@ int F(void){
   }
   else 
     if (isdigit(jeton)) { /* regle : F->0|1|...|9 */
+    int jetonAux = jeton - 48;
   		AVANCER
-  		return jeton - 48; 
+  		return jetonAux; 
     }        
     else ERREUR_SYNTAXE
 }

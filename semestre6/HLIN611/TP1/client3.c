@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
   /* je passe en paramètre l'adresse de la socket d'écoute du serveur
      (IP et numéro de port). Je teste donc le passage de parametres */
 
-  if (argc != 3){
-    printf("utilisation : %s ip_serveur port_serveur\n", argv[0]);
+  if (argc != 4){
+    printf("utilisation : %s ip_serveur port_serveur nbIterations\n", argv[0]);
     exit(0);
   }
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
   /* Etape 4 : envoyer un message au serveur. Ce message est une chaîne de caractères saisie au clavier. Vous pouvez utiliser une autre fonction pour la saisie. */
 
   printf("saisir un message à envoyer (moins de 200 caracteres) \n");
-  char m[202]; 
+  char m[1500]; 
   fgets(m, sizeof(m), stdin); // copie dans m la chaîne saisie que
 			      // clavier (incluant les esaces et le
 			      // saut de ligne à la fin).
@@ -82,32 +82,53 @@ int main(int argc, char *argv[]) {
      saisie (information utile)(refléchir à la raison). Remarque : le
      serveur s'attends à recevoir une chaine de caractères y compris le
      caractère de fin */
-  
-  int snd = send(ds, m, strlen(m)+1, 0);
-  /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
- if (snd < 0) {
-  //printf("Client : Erreur lors du send \n");
-  perror("Client : Erreur lors du send \n");
-  close(ds);
-  exit(1);
- }
- if (snd == 0) {
-  perror("Client : Serveur déconnecté \n");
-  close(ds);
-  exit(1);
- }
- if (snd < strlen(m)+1) {
-  perror("Client : Seulement une partie du message n'a été envoyée \n");
- }
 
+  int snd1;
 
+  int nbOctetsEnvoyes;
+
+  int nbAppelsSend = 0;
+
+  int nbOctetsSupposesEnvoyes = atoi(argv[3]) * (strlen(m)+1);
+
+  printf("arg3 : %d\n", atoi(argv[3]));
+  printf("strlen(m)+1 : %ld\n", strlen(m)+1);
+  printf("var nbOct.. : %d\n", nbOctetsSupposesEnvoyes);
+
+  for (int i = 0; i < atoi(argv[3]); ++i)
+  {
+
+  	snd1 = send(ds, m, strlen(m)+1, 0);
+
+  	nbAppelsSend++;
+
+	  /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
+	 if (snd1 < 0) {
+	  //printf("Client : Erreur lors du send \n");
+	  perror("Client : Erreur lors du send 1\n");
+	  close(ds);
+	  exit(1);
+	 }
+	 if (snd1 == 0) {
+	  perror("Client : Serveur déconnecté \n");
+	  close(ds);
+	  exit(1);
+	 }
+	 if (snd1 < strlen(m)+1) {
+	  perror("Client : Seulement une partie du message 1 a été envoyée \n");
+	 }
+
+	 nbOctetsEnvoyes += snd1;
+  }
 
   /* Afficher le nombre d'octets EFFECTIVEMENT déposés dans le buffer
      d'envoi de la socket cliente. : /!\ Faire la différence entre le
      nombre d'octet qu'on demande à déposer / envoyer et le nombre
      d'octets qu'on a effectivement déposés.*/
   
-  printf("Client : j'ai déposé %d octets \n", snd);
+  printf("Client : j'ai déposé %d octets \n", nbOctetsEnvoyes);
+  printf("Client : j'aurai du déposer %d octets \n", nbOctetsSupposesEnvoyes);
+  printf("Client : Nb d'appels de send %d\n", nbAppelsSend);
 
 
   // Je peux tester l'exécution de cette étape avant de passer à la suite. 
@@ -141,7 +162,7 @@ int main(int argc, char *argv[]) {
   /* Etape 6 : je compare le nombre d'octets déposés (envoyés) avec
      la valeur reçue. L'objectif est d'avoir la même valeur. */
 
-  printf("Client : j'ai envoyé %d octets et le serveur me répond qu'il a reçu : %d octets \n", snd, reponse) ;
+  //printf("Client : j'ai envoyé %d octets et le serveur me répond qu'il a reçu : %d octets \n", snd1, reponse) ;
 
 
   /* Etape 7 : je termine proprement. */

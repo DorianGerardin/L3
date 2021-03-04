@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* Etape 1 : créer une socket */   
-  int ds = socket(PF_INET, SOCK_STREAM, 0);
+  int ds = socket(PF_INET,SOCK_STREAM, 0);
 
   /* /!\ : Il est indispensable de tester les valeurs de retour de
      toutes les fonctions et agir en fonction des valeurs possibles.*/
@@ -45,14 +45,14 @@ int main(int argc, char *argv[]) {
   /* Etape 2 : designer la socket du serveur : avoir une structure qui
      contient l'adresse de cette socket (IP + numéro de port. */
   struct sockaddr_in adrServ;
-  adrServ.sin_addr.s_addr = inet_addr(argv[1]);//inet_addr("2.4.250.97") ;
+  adrServ.sin_addr.s_addr = inet_addr(argv[1]) ;// inet_addr("84.103.70.123")
   adrServ.sin_family = AF_INET;
-  adrServ.sin_port = htons((short) atoi(argv[2]));
+  adrServ.sin_port = htons( (short) atoi (argv[2]));  //htons(33333)
     
   int lgAdr = sizeof(struct sockaddr_in);
     
   /* Etape 3 : envoyer une demande de connexion au serveur.*/
-  int conn = connect(ds, (struct sockaddr *) &adrServ, lgAdr);
+  int conn = connect(ds, (struct sockaddr *)&adrServ, lgAdr );
   // je traite les valeurs de retour
   if (conn <0){
     perror ("Client: pb au connect :");
@@ -83,23 +83,24 @@ int main(int argc, char *argv[]) {
      serveur s'attends à recevoir une chaine de caractères y compris le
      caractère de fin */
   
-  int snd = send(ds, m, strlen(m)+1, 0);
+  int snd = send(ds, m, strlen(m)+1, 0 );
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
- if (snd < 0) {
-  //printf("Client : Erreur lors du send \n");
-  perror("Client : Erreur lors du send \n");
-  close(ds);
-  exit(1);
- }
- if (snd == 0) {
-  perror("Client : Serveur déconnecté \n");
-  close(ds);
-  exit(1);
- }
- if (snd < strlen(m)+1) {
-  perror("Client : Seulement une partie du message n'a été envoyée \n");
- }
+if(snd<0){
+//printf("client: ereur lors du send");
+perror("client: ereur lors du send:");
+close(ds);
+exit(1);
+}
 
+if(snd==0){
+printf("client: serveur deconnecter \n");
+close(ds);
+exit(1);
+}
+
+if(snd<strlen(m)+1){
+printf("client; attention, je n'ai pas pu deposer q'une partie du message \n");
+}
 
 
   /* Afficher le nombre d'octets EFFECTIVEMENT déposés dans le buffer
@@ -125,18 +126,19 @@ int main(int argc, char *argv[]) {
   printf("Client : envoi fait, j'attends la reponse du serveur \n");
   
   int reponse;
-  int rcv = recv (ds, &reponse, sizeof(int), 0) ;
+  int rcv = recv (ds, &reponse, sizeof(int),0) ;
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
-  if(rcv < 0) {
-    perror("Client : Problème de reception : ");
+ if(rcv<0){
+    perror("cleint: probleme de receive:");
     close(ds);
     exit(1);
-  }
-  if (rcv == 0) {
-    printf("Client : serveur dconnecté \n");
-    close(ds);
-    exit(1);
-  }
+ }
+
+ if(rcv==0){
+   printf("cleint: serveur deconnecter \n");
+   close(ds);
+   exit(1);
+}
 
   /* Etape 6 : je compare le nombre d'octets déposés (envoyés) avec
      la valeur reçue. L'objectif est d'avoir la même valeur. */

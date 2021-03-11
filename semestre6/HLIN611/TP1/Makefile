@@ -5,7 +5,7 @@
 # nom de l'executable
 #BIN=runPeriod
 
-BIN=bin/client  bin/serveur  bin/client2  bin/serveur2  bin/client3  bin/serveur3
+BIN=bin/client  bin/serveur  bin/client2  bin/serveur2  bin/client3  bin/serveur3  bin/client4  bin/serveur4
 #BIN=bin/serveur
 
 # liste des fichiers sources 
@@ -15,6 +15,8 @@ SRCS3=client2.c
 SRCS4=serveur2.c
 SRCS5=client3.c
 SRCS6=serveur3.c
+SRCS7=client4.c
+SRCS8=serveur4.c
 
 default: $(BIN)
 
@@ -41,6 +43,12 @@ bin/client3: $(SRCS5:%.c=obj/%.o)
 	gcc -lpthread -o $@ $+
 
 bin/serveur3: $(SRCS6:%.c=obj/%.o)
+	gcc -lpthread -o $@ $+
+
+bin/client4: $(SRCS7:%.c=obj/%.o)
+	gcc -lpthread -o $@ $+
+
+bin/serveur4: $(SRCS8:%.c=obj/%.o)
 	gcc -lpthread -o $@ $+
 
 clean:

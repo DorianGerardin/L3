@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include "commonSendReceive.c"
 
 // Rôle du serveur : accepter la demande de connexion d'un client,
 // recevoir une chaîne de caractères, afficher cette chaîne et
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
   /* Etape 1 : créer une socket (la socket qui permettra de recevoir
      les demandes de connexion.*/
  
-  int ds = socket(PF_INET,SOCK_STREAM,0 );
+  int ds = socket(PF_INET, SOCK_STREAM, 0);
   /* /!\ : Il est indispensable de tester les valeurs de retour de
      toutes les fonctions et agir en fonction des valeurs possibles.*/
   if (ds == -1){
@@ -47,8 +48,8 @@ int main(int argc, char *argv[])
   
   struct sockaddr_in server;
   server.sin_family = AF_INET;
-  server.sin_addr.s_addr =INADDR_ANY ; // INADDR_ANY
-  server.sin_port = htons( (short) atoi (argv[1])); // 0
+  server.sin_addr.s_addr = inet_addr("192.168.1.55");
+  server.sin_port = htons(60000);
   
   if(bind(ds, (struct sockaddr *) &server, sizeof(server)) < 0){
     perror("Serveur : erreur bind");
@@ -105,17 +106,25 @@ int main(int argc, char *argv[])
      adresse IP et numéro de port de la structure adCv. Attention à
      faire les conversions du format réseau vers le format
      hôte. Utiliser la fonction inet_ntoa(..) pour l'IP.*/
-  printf("Serveur: le client %s:%d est connecté  \n", inet_ntoa(adCv.sin_addr) , ntohs(adCv.sin_port));
+  printf("Serveur: le client %s:%d est connecté  \n", inet_ntoa(adCv.sin_addr), ntohs(adCv.sin_port));
 
   // Je peux tester l'exécution de cette étape avant de passer à la suite.
  
   /* Etape 5 : réception d'un message de type chaîne de caractères */
- 
-  char buffer[500];
-  /* attendre un message dont la taille maximale est 500 octets. Pour
+  char buffer[4000];
+  /* attendre un message dont la taille maximale est 1500 octets. Pour
      cet exercice, il est demandé de ne faire qu'un seul appel à recv
      pour recevoir un message. */
-  int rcv = recv (dsCv, buffer, sizeof(buffer), 0 ) ;
+  int nbOctetsTotal = 0;
+  int nbAppelsRecv = 0;
+  while(1) {
+  	int rcv = recvTCP(dsCv, buffer, sizeof(buffer));
+  	nbOctetsTotal += rcv;
+  	nbAppelsRecv++;
+  	//printf("Serveur : Nb total d'octets reçus par le client depuis la 1ere connexion : %d\n", nbOctetsTotal);
+  	printf("Serveur : Nb total d'appels effectués de recv : %d\n", nbAppelsRecv);
+    printf("Serveur : contenu du message : %s \n", buffer);
+  }
 
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
 
@@ -125,27 +134,27 @@ int main(int argc, char *argv[])
      depuis le buffer de réception d'une socket et le nombre d'octets
      qu'on a effectivement réussi à extraire.*/
   
-  printf("Serveur : j'ai recu %d octets \n", rcv);
-  printf("Serveur : contenu du message : %s \n", buffer);
+  //printf("Serveur : j'ai recu %d octets \n", rcv);
 
   // Je peux tester l'exécution de cette étape avant de passer à la suite.
   
   /* Etape 6 : répondre au client en lui envoyant le nombre d'octets
      effectivement reçus à l'étape 5. Pour cet exercice, faire un seul
      appel de la fonction send.*/ 
-  int snd = send(dsCv, &rcv, sizeof(int), 0);
+  //int snd = send(dsCv, &rcv, sizeof(int), 0);
   
   /* Traiter TOUTES les valeurs de retour (voir le cours ou la documentation). */
 
-  if(snd<0){
-perror("serveur: erreur send:");
-close(dsCv);
-  }
-if(snd==0){
-printf("serveur: client est deconnecté\n ");
-close(dsCv);
-   
-}
+  // if (snd < 0) {
+  //   perror("Serveur : Erreur lors du send \n");
+  //   close(dsCv);
+  //   exit(1);
+  // }
+  // if (snd == 0) {
+  //   printf("Serveur : Client déconnecté \n");
+  //   close(dsCv);
+  // }
+
     
   /* Etape 7 : fermeture de la socket du client */ 
   printf("Serveur : fin du dialogue avec le client\n");

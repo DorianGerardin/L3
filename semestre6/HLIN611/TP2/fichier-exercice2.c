@@ -34,7 +34,16 @@ int main(int argc, char *argv[])
     // je n'ai pas besoin de garder tous les messages, j'écrase les précédents.
     rcv = recvTCP (dsCv, (char*)messagesRecus, atoi(argv[2]), &nbTotalOctetsRecus, &nbAppelRecv);  
 
-    ...
+    if(rcv < 0) {
+      perror("Serveur : Problème de reception : ");
+      close(ds);
+      exit(1);
+    }
+    if (rcv == 0) {
+      printf("Serveur : client deconnecté \n");
+      close(ds);
+      exit(1);
+    }x
 
     printf("Serveur : j'ai reçu au total %d octets avec %d appels à recv \n", nbTotalOctetsRecus, nbAppelRecv);
  
